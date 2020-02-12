@@ -4,22 +4,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using LuckySpin.Models;
+using LuckySpin.ViewModels;
 
 namespace LuckySpin.Controllers
 {
     public class SpinnerController : Controller
     {
         Random random;
-        Repository repository;
+        
+        Repository _repository;
+        private object player;
+        private Spin spin;
 
         /***
          * Controller Constructor
          */
-        public SpinnerController()
+        public SpinnerController(Repository repository)
         {
             random = new Random();
             //TODO: Inject the Repository singleton
-            repository = new Repository();
+            _repository = repository;
         }
 
         /***
@@ -36,44 +40,54 @@ namespace LuckySpin.Controllers
             if (!ModelState.IsValid) { return View(); }
 
             // TODO: Add the Player to the Repository
+            _repository.currentPlayer = player;
+
 
             // TODO: Build a new SpinItViewModel object with data from the Player and pass it to the View
+            SpinViewModel spinvm = new SpinViewModel()
+            {
+                FirstName = player.FirstName,
+                Balance = player.Balance
+            };
 
             return RedirectToAction("SpinIt", player); 
         }
 
         /***
          * Spin Action - Game Play
-         **/  
-         public IActionResult SpinIt(Player player) //TODO: replace the parameter with a ViewModel
+         **/
+        public IActionResult SpinIt(SpinViewModel spinvm) //TODO: replace the parameter with a ViewModel
         {
-            Spin spin = new Spin
-            {
-                Luck = player.Luck,
-                A = random.Next(1, 10),
-                B = random.Next(1, 10),
-                C = random.Next(1, 10)
-            };
 
-            spin.IsWinning = (spin.A == spin.Luck || spin.B == spin.Luck || spin.C == spin.Luck);
+
+            _ = spinvm.Luck;
+            spinvm.A = random.Next(1, 10);
+            spinvm.B = random.Next(1, 10);
+            spinvm.C = random.Next(1, 10);
+
+
+            spinvm.IsWinning = (spinvm.A == spinvm.Luck || spinvm.B == spinvm.Luck || spinvm.C == spinvm.Luck);
 
             //Add to Spin Repository
-            repository.AddSpin(spin);
+
+            _repository.AddSpin(spin);
+
 
             //TODO: Clean up ViewBag using a SpinIt ViewModel instead
-            ViewBag.ImgDisplay = (spin.IsWinning) ? "block" : "none";
-            ViewBag.FirstName = player.FirstName;
-            ViewBag.Balance = player.Balance;
+            if (spinvm.IsWinning)
+                ViewBag.Display = "block";
+            else
+                ViewBag.Display = "none";
 
-            return View("SpinIt", spin);
+
+            return View("SpinIt", spinvm);
         }
-
-        /***
-         * LuckList Action - End of Game
-         **/
-         public IActionResult LuckList()
+    /***
+     * LuckList Action - End of Game
+     **/
+    public IActionResult LuckList()
         {
-                return View(repository.PlayerSpins);
+                return View();
         }
     }
 }

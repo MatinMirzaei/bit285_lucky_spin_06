@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace LuckySpin.Models
 {
     public class Repository
     {
+        public Player currentPlayer { get; set;}
         private List<Spin> spins = new List<Spin>();
 
        //Property
@@ -16,6 +18,11 @@ namespace LuckySpin.Models
         public void AddSpin(Spin s)
         {
             spins.Add(s);
+        }
+
+        internal void AddSpin(object spin)
+        {
+            throw new NotImplementedException();
         }
     }
 }

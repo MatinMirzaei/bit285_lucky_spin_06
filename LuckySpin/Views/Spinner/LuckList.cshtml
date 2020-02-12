@@ -1,4 +1,5 @@
-﻿@model IEnumerable<LuckySpin.Models.Spin> 
+﻿@model IEnumerable<LuckySpin.Models.Spin>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
     int row = 0;
@@ -9,11 +10,13 @@
     <thead><tr><th>Spin #</th><th>Result</th></tr></thead>
     <tbody>
         <!-- TODO: Use the ViewModel-->
-        @foreach( LuckySpin.Models.Spin spin in @Model ){
+        @foreach (LuckySpin.Models.Spin spin in @Model)
+        {
             row += 1;
             className = (spin.IsWinning) ? "winner" : "";
             <tr class="@className">
-                <td>@row</td> <td>@spin.IsWinning</td>
+                <td>@row</td>
+                <td>@spin.IsWinning</td>
             </tr>
         }
     </tbody>
