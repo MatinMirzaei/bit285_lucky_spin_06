@@ -19,7 +19,7 @@ namespace LuckySpin.Models
         /*
          * Balance Property with specialty methods
          */
-        Decimal _balance; //Stores the balance for use by specialty methods
+        decimal _balance; //Stores the balance for use by specialty methods
         Decimal charge = 0.50m, payout = 1.00m;
         public Decimal Balance
         {

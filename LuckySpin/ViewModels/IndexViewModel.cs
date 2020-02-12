@@ -8,11 +8,15 @@ namespace LuckySpin.ViewModels
 {
     public class IndexViewModel
     {
+        [Display(Prompt = "First name")]
         public string FirstName { get; set; }
 
-        [Display(Prompt = " Starting Balance $3 to $10")]
-        public Decimal StartingBalance { get; set; }
         [Range(1, 9, ErrorMessage = "Choose a number")]
         public int Luck { get; set; }
+
+        [Display(Prompt = "Starting Balance $3 to $10")]
+        public Decimal StartingBalance { get; set; }
+
+       
     }
 }

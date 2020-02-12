@@ -16,6 +16,8 @@ namespace LuckySpin.Controllers
         private object player;
         private Spin spin;
 
+        public string Display { get; private set; }
+
         /***
          * Controller Constructor
          */
@@ -75,9 +77,9 @@ namespace LuckySpin.Controllers
 
             //TODO: Clean up ViewBag using a SpinIt ViewModel instead
             if (spinvm.IsWinning)
-                ViewBag.Display = "block";
+                Display = "block";
             else
-                ViewBag.Display = "none";
+                Display = "none";
 
 
             return View("SpinIt", spinvm);
